@@ -4,7 +4,7 @@ import morgan from 'morgan';
 import cors from "cors"
 import { dbConnection } from './conexion.js';
 import { port } from './config.js';
-import jardinRoute from "./routes/jardinRoutes.js"
+import router from "./routes/jardinRoutes.js"
 
 dbConnection()
 const app = express();
@@ -18,7 +18,8 @@ app.use(express.urlencoded({extended: true}))
 app.use(morgan('tiny'))
 
 // Ruta de ejemplo
-app.use(jardinRoute)
+app.use(router)
+
 // Iniciar el servidor
 app.listen(PORT, () => {
   console.log(`Servidor escuchando en http://localhost:${port}`);

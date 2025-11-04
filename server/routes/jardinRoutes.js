@@ -1,4 +1,5 @@
 import { Router } from "express";
+import getPreguntas from "../controllers/preguntasController.js";
 import { cambiarEstadoJardinController, crearJardinesController, guardarDatosAdultoController, guardarDatosNinosController, obtenerJardinesController, obtenerTodosLosDatosController } from "../controllers/datosController.js";
 
 const router = Router()
@@ -14,6 +15,8 @@ router.post('/guardar_datos_ninos', guardarDatosNinosController)
 router.post('/crear_jardin', crearJardinesController)
 
 router.post('/cambiar_estado_jardin', cambiarEstadoJardinController)
+
+router.get('/preguntas', getPreguntas);
 
 
 

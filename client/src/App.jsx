@@ -1,5 +1,7 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import './App.css'
+import QuestionsPanel from './components/questions'
+import FormularioInscripcion from './components/formularioInscripcion'
 
 function App() {
   return (
@@ -7,6 +9,7 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route path='/' element={<FormularioInscripcion/>} />
+          <Route path='/preguntas' element={<QuestionsPanel/>} />
         </Routes>
       </BrowserRouter>
     </>
