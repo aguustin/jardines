@@ -1,9 +1,10 @@
 import mongoose from "mongoose";
 
 const inscripcionSchema = mongoose.Schema({
+    cuit:{type:Number},
     nombreAdulto:{type: String},
     dniAdulto:{type: Number},
-    fechaNacimientoAdulto:{type: String},
+    fechaNacimientoAdulto:{type: Date},
     nacionalidad:{type:String},
     convivencia:{type: Boolean},
     motivo:{type:String},
@@ -16,17 +17,19 @@ const inscripcionSchema = mongoose.Schema({
     telefonoPareja:{type:Number},
     convivenciaPareja:{type:Boolean},
     ninos:[{
+        cuil:{type:Number},
         nombreNino:{type:String},
         dniNino:{type:Number},
-        nacimientoNino:{type:String},
+        nacimientoNino:{type: Date},
         nacionalidadNino:{type:String},
         domicilioNino:{type:String},
-        poseeObra:{type:Boolean},
+        poseeObraSocial:{type:Boolean},
         nombreObraSocial:{type:String},
         efectorSalud:{type:String},
-        grupoSnguineo:{type:String},
+        grupoSanguineo:{type:String},
         alergico:{type:String},
-        puntajeTotal:{type:Number},
+        descripcionAlergia:{type:String},
+       // puntajeTotal:{type:Number},
         cantidadDeInscripciones:{type:Number}
     }]
 })
