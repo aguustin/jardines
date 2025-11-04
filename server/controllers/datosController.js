@@ -1,5 +1,35 @@
 import inscripcion from "../models/inscripcion.js";
 import jardin from "../models/jardin.js";
+const SftpClient = require('ssh2-sftp-client');
+const sftp = new SftpClient();
+
+const config = {
+  host: '10.3.0.70',
+  port: 22,
+  username: 'desarrollo',
+  password: 'bot2025*',
+};
+
+async function subirImagenes(files) {
+  try {
+    await sftp.connect(config);
+
+    const rutas = [];
+
+    for (const file of files) {
+      const remotePath = `/home/bot_img/${file.originalname}`; // ruta remota
+      await sftp.put(file.path, remotePath); // sube archivo
+      rutas.push(`http://10.3.0.70/home/bot_img/${file.originalname}`); // url que guardarás en BD
+    }
+
+    await sftp.end();
+    return rutas; // devuelve las rutas para guardar en Mongo
+  } catch (err) {
+    console.error('Error subiendo archivos SFTP:', err);
+    throw err;
+  }
+}
+
 
 export const obtenerTodosLosDatosController = async (req, res) => {
     const obtenerDatos = await inscripcion.find()
@@ -78,6 +108,11 @@ export const guardarDatosNinosController = async (req, res) => {
         cantidadDeinscripciones
     } = req.body;
 
+    if(!req.files){
+        return res.status(200).json({msg: "Se necesita imagen DNI del niño"})
+    }
+
+    const [rutaFrente, rutaDorso, rutaCud] = await subirImagenes(files);
     try {
         const existeAdulto = await inscripcion.findOne({ cuit: Number(cuit) });
         if (!existeAdulto) {
@@ -92,6 +127,8 @@ export const guardarDatosNinosController = async (req, res) => {
                     $set: {
                         "ninos.$.nombreNino": nombreNino ?? null,
                         "ninos.$.dniNino": dniNino ?? null,
+                        "ninos.$.imagenDniFrente":rutaFrente,
+                        "ninos.$.imagenDniDorso":rutaDorso,
                         "ninos.$.nacimientoNino": nacimientoNino ?? null,
                         "ninos.$.nacionalidadNino": nacionalidadNino ?? null,
                         "ninos.$.domicilioNino": domicilioNino ?? null,
@@ -101,6 +138,7 @@ export const guardarDatosNinosController = async (req, res) => {
                         "ninos.$.grupoSanguineo": grupoSanguineo ?? null,
                         "ninos.$.alergico": alergico ?? null,
                         "ninos.$.descripcionAlergia": descripcionAlergia ?? null,
+                        "ninos.$.imagenCud": rutaCud,
                         "ninos.$.cantidadDeinscripciones": cantidadDeinscripciones ?? null
                     }
                 }
@@ -114,6 +152,8 @@ export const guardarDatosNinosController = async (req, res) => {
                             cuil: cuil ?? null,
                             nombreNino: nombreNino ?? null,
                             dniNino: dniNino ?? null,
+                            imagenDniFrente:rutaFrente,
+                            imagenDniDorso:rutaDorso,
                             nacimientoNino: nacimientoNino ?? null,
                             nacionalidadNino: nacionalidadNino ?? null,
                             domicilioNino: domicilioNino ?? null,
@@ -123,6 +163,7 @@ export const guardarDatosNinosController = async (req, res) => {
                             grupoSanguineo: grupoSanguineo ?? null,
                             alergico: alergico ?? null,
                             descripcionAlergia: descripcionAlergia ?? null,
+                            imagenCud:rutaCud,
                             //puntajeTotal: puntajeTotal ?? null,
                             cantidadDeinscripciones: cantidadDeinscripciones ?? null
                         }
@@ -179,7 +220,7 @@ export const crearJardinesController = async (req, res) => {
 
 export const cambiarEstadoJardinController = async (req, res) => {
     const {jardinId, estado} = req.body
-    
+
     await jardin.updateOne(
         {_id: jardinId},
         {
@@ -188,6 +229,5 @@ export const cambiarEstadoJardinController = async (req, res) => {
             }
         }
     )
-
     res.sendStatus(200)
 }
