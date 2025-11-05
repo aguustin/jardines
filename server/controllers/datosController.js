@@ -1,6 +1,6 @@
 import inscripcion from "../models/inscripcion.js";
 import jardin from "../models/jardin.js";
-const SftpClient = require('ssh2-sftp-client');
+import SftpClient from 'ssh2-sftp-client';
 const sftp = new SftpClient();
 
 const config = {
@@ -111,6 +111,12 @@ export const guardarDatosNinosController = async (req, res) => {
     if(!req.files){
         return res.status(200).json({msg: "Se necesita imagen DNI del niño"})
     }
+
+    const files = [
+        req.files['imagenUno'][0],
+        req.files['imagenDos'][0],
+        req.files['imagenTres'][0]
+    ];
 
     const [rutaFrente, rutaDorso, rutaCud] = await subirImagenes(files);
     try {
