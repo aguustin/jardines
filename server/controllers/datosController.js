@@ -1,6 +1,6 @@
 import inscripcion from "../models/inscripcion.js";
 import jardin from "../models/jardin.js";
-const SftpClient = require('ssh2-sftp-client');
+import SftpClient from 'ssh2-sftp-client';
 const sftp = new SftpClient();
 
 const config = {
