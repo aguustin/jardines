@@ -31,7 +31,7 @@ const inscripcionSchema = mongoose.Schema({
         grupoSanguineo:{type:String},
         alergico:{type:String},
         descripcionAlergia:{type:String},
-        // puntajeTotal:{type:Number},
+        puntajeTotal:{type:Number},
         imagenCud:{type:String},
         cantidadDeInscripciones:{type:Number}
     }]

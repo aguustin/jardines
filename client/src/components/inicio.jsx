@@ -4,10 +4,10 @@ import { useState } from "react"
 import { useNavigate } from "react-router-dom"
 
 const Inicio = () => {
-    const [cuil, setCuil] = useState('');
+    const [CUIT, setCUIT] = useState('');
     const navigate = useNavigate(); // o usar <Link> si prefieres
 
-    const validarCuil = (valor) => {
+    const validarCUIT = (valor) => {
         const limpio = valor.replace(/[^0-9]/g, '');
         if (limpio.length !== 11) return false;
 
@@ -26,22 +26,23 @@ const Inicio = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        const normalizado = cuil.trim();
+        const normalizado = CUIT.trim();
 
-        if (validarCuil(normalizado)) {
+        if (validarCUIT(normalizado)) {
             fetch(`/api/usuarios/${normalizado}`)
                 .then(response => {
                     if (!response.ok) {
-                        throw new Error('CUIL no encontrado');
+                        throw new Error('CUIT no encontrado');
                     }
                     return response.json();
                 })
                 .then(data => {
-                    console.log('Usuario encontrado:', data);
-                    navigate('/formulario-inscripcion', { state: { cuil: normalizado } });
+                    const persona = data.usuario
+                    console.log('Usuario encontrado:', persona);
+                    navigate('/formulario-inscripcion', { state: { persona } });
                 })
                 .catch(error => {
-                    alert('CUIL no encontrado. Por favor, verifique e intente nuevamente.');
+                    alert('CUIT no encontrado. Por favor, verifique e intente nuevamente.');
                     console.error('Error al buscar usuario:', error);
                 });         
         }
@@ -55,19 +56,19 @@ const Inicio = () => {
                         Sistema de Inscripción a Jardines
                     </h1>
                     <p className="text-gray-600 mb-6">
-                        Ingrese su CUIL para comenzar el proceso de inscripción
+                        Ingrese su CUIT para comenzar el proceso de inscripción
                     </p>
                     
                     <form onSubmit={handleSubmit} className="space-y-4">
                         <div>
                             <label className="block text-sm font-medium text-gray-700 mb-2">
-                                CUIL
+                                CUIT
                             </label>
                             <Input 
                                 type="text" 
                                 placeholder="20-12345678-9"
-                                value={cuil}
-                                onChange={(e) => setCuil(e.target.value)}
+                                value={CUIT}
+                                onChange={(e) => setCUIT(e.target.value)}
                                 className="w-full border-2 border-gray-200 rounded-lg px-4 py-3 focus:border-blue-500 focus:outline-none transition-colors"
                                 required
                             />
