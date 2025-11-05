@@ -1,4 +1,5 @@
 import { Router } from "express";
+import getPreguntas from "../controllers/preguntasController.js";
 import { cambiarEstadoJardinController, crearJardinesController, guardarDatosAdultoController, guardarDatosNinosController, obtenerJardinesController, obtenerTodosLosDatosController } from "../controllers/datosController.js";
 import multer from "multer";
 
@@ -31,6 +32,8 @@ router.post('/guardar_datos_ninos',
 router.post('/crear_jardin', crearJardinesController)
 
 router.post('/cambiar_estado_jardin', cambiarEstadoJardinController)
+
+router.get('/preguntas', getPreguntas);
 
 
 
