@@ -326,7 +326,8 @@ export default function FormularionConPuntaje({ userCUIL }) {
                     <span className={`text-xs font-semibold ${q.selected === false ? 'text-red-600' : 'text-gray-400'}`}>
                       NO
                     </span>
-                    <Switch 
+                    <Switch
+                      className="data-[state=checked]:bg-purple-600"
                       checked={q.selected === true}
                       onCheckedChange={(checked) => onToggleB(q.id, checked)}
                     />
