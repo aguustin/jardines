@@ -12,7 +12,7 @@ const inscripcionSchema = mongoose.Schema({
     emailAdulto:{type:String},
     domicilio:{type:String},
     estadoCivil:{type: Number},
-    tienePareja:{type: String},
+    nombrePareja:{type: String},
     dniPareja:{type: Number},
     telefonoPareja:{type:Number},
     convivenciaPareja:{type:Boolean},

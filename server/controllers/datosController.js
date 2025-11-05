@@ -56,14 +56,35 @@ export const guardarDatosAdultoController = async (req, res) => {
          domicilio,
          estadoCivil,
          tienePareja,
+         nombrePareja,
          dniPareja,
          telefonoPareja,
          convivenciaPareja} = req.body;
-    console.log(cuit)
+
+        console.log(cuit,
+         nombreAdulto,
+         dniAdulto,
+         fechaNacimientoAdulto,
+         nacionalidad,
+         convivencia,
+         motivo,
+         telefonoAdulto,
+         emailAdulto,
+         domicilio,
+         estadoCivil,
+         tienePareja,
+         nombrePareja,
+         dniPareja,
+         telefonoPareja,
+         convivenciaPareja)
+
     const adultoExiste = await inscripcion.find({cuit: Number(cuit) })
 
     if(adultoExiste.length > 0){
-        return res.status(200).json({existe: 1})
+        return res.status(200).json({existe: 1, adultoExiste: adultoExiste})
+    }
+    if(!dniAdulto){
+        return res.status(200).json({existe: 3})
     }
 
     await inscripcion.create({
@@ -79,6 +100,7 @@ export const guardarDatosAdultoController = async (req, res) => {
         domicilio: domicilio ?? null,
         estadoCivil: estadoCivil ?? null,
         tienePareja: tienePareja ?? null,
+        nombrePareja: nombrePareja ?? null,
         dniPareja: dniPareja ?? 0,
         telefonoPareja: telefonoPareja ?? 0,
         convivenciaPareja: convivenciaPareja ?? null
@@ -235,5 +257,10 @@ export const cambiarEstadoJardinController = async (req, res) => {
             }
         }
     )
+    res.sendStatus(200)
+}
+
+export const borrarDatosController = async (req, res) => {
+    await inscripcion.deleteMany()
     res.sendStatus(200)
 }

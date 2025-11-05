@@ -1,6 +1,5 @@
 import { Router } from "express";
-import getPreguntas from "../controllers/preguntasController.js";
-import { cambiarEstadoJardinController, crearJardinesController, guardarDatosAdultoController, guardarDatosNinosController, obtenerJardinesController, obtenerTodosLosDatosController } from "../controllers/datosController.js";
+import { borrarDatosController, cambiarEstadoJardinController, crearJardinesController, guardarDatosAdultoController, guardarDatosNinosController, obtenerJardinesController, obtenerTodosLosDatosController } from "../controllers/datosController.js";
 import multer from "multer";
 
 const router = Router()
@@ -33,8 +32,6 @@ router.post('/crear_jardin', crearJardinesController)
 
 router.post('/cambiar_estado_jardin', cambiarEstadoJardinController)
 
-router.get('/preguntas', getPreguntas);
-
-
+router.post('/borrar_datos', borrarDatosController)
 
 export default router
